@@ -4,10 +4,12 @@ cascPath = "../XMLData/haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(0)
+video_capture.set(cv2.CAP_PROP_FPS, 60)
 
 while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
+    frame = cv2.flip(frame, 1)
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
