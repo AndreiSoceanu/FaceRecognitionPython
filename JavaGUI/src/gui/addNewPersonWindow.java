@@ -1,9 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -11,11 +15,19 @@ package gui;
  */
 public class addNewPersonWindow extends javax.swing.JFrame {
 
+    private String dataPath = "../TrainData/data.txt";
+    private Map<String, Integer> DB_name_int;
     /**
      * Creates new form addNewPersonWindow
+     * @param DB_name_int list of DB_name_int already in database
      */
-    public addNewPersonWindow() {
+    public addNewPersonWindow(Map<String, Integer> DB_name_int) {
         initComponents();
+        this.DB_name_int = DB_name_int;
+    }
+
+    private addNewPersonWindow() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -29,12 +41,21 @@ public class addNewPersonWindow extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        addButton = new javax.swing.JButton();
+        wrn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTextField1.setToolTipText("asd");
 
         jLabel1.setText("Name:");
+
+        addButton.setText("Add");
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -44,7 +65,10 @@ public class addNewPersonWindow extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(wrn)
+                    .addComponent(addButton)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -54,11 +78,39 @@ public class addNewPersonWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addButton)
+                .addGap(28, 28, 28)
+                .addComponent(wrn)
+                .addContainerGap(212, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+        wrn.setText("");
+        
+        String inc = this.jTextField1.getText();
+        this.jTextField1.setText("");
+        if(DB_name_int.containsKey(inc)){
+            wrn.setText("ALREADY EXISTS IN DATA BASE! NOT ADDED!");
+            return;
+        }
+        try {
+            Scanner scan = new Scanner(new File(dataPath));
+            int n = scan.nextInt();
+            DB_name_int.put(inc, n);
+            PrintWriter writer = new PrintWriter(dataPath);
+            n++;
+            writer.print(n);
+            scan.close();
+            writer.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(addNewPersonWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_addButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -97,7 +149,9 @@ public class addNewPersonWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel wrn;
     // End of variables declaration//GEN-END:variables
 }
