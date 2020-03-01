@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class addNewPersonWindow extends javax.swing.JFrame {
 
-    private String dataPath = "../TrainData/data.txt";
+    private String dataPath = "../Data/data.txt";
     private Map<String, Integer> DB_name_int;
     /**
      * Creates new form addNewPersonWindow
